@@ -10,7 +10,7 @@ class TestDatabase extends Database
     function setup()
     {
         // Specify the classes to map
-        $this->map (Country::class, Band::class, Person::class);
+        $this->map (Country::class, Band::class);
 
         // Create the database if not existed
         if (!$this->is_created())
@@ -84,46 +84,25 @@ class Person
 
 try
 {
-    $db = new TestDatabase(new mysqli("localhost", "root", "123"));
+    $db = new TestDatabase(new mysqli("localhost", "areda", "123"));
+    
+    $band = new Band ();
+    $band->id = 50;
+    $band->name = "Blur";
+    $band->genre = "Britpop";
+    $band->country = 2;
 
-    ?>
-    <table width=50%>
-        <thead>
-            <th>Band's name</th>
-            <th>Band's genre</th>
-            <th>Band's origin</th>
-        </thead>
-        <tbody>
-            <?php
-                foreach ($db[Band::class] as $band)
-                {
-                    echo "<tr>";
-                    echo "<td>" . $band->name . "</td>";
-                    echo "<td>" . $band->genre . "</td>";
-                    echo "<td>" . $band->country->name . "</td>";
-                    echo "</tr>";
-                }
-            ?>
-        </tbody>
-    </table>
-    <?php
+    $db[Band::class]->add ($band);
+    $db->refresh ();
+    
     // Group bands by their country
     foreach ($db[Country::class] as $country)
     {
         echo "<p><u>$country->name</u></p>";
         
         foreach ($country->bands as $band)
-            echo "<p>$band->name<p>";
+            echo "<small>$band->name</small><br>";
     }
-
-    echo "<hr>";
-
-    $band = $db[Band::class]->get(0);
-    $band->name = "Green Day";
-    $band->genre = "Punk";
-
-    $db[Band::class]->update($band);
-    $db->refresh();
 }
 catch(Exception $e)
 {

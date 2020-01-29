@@ -210,11 +210,18 @@ class SQLConverter
 
             $value = $property->getValue($instance);
 
+            if ($value == null)
+                continue;
+
             if (array_key_exists("@references", $annotations))
             {
-                $primaryProperty = SQLConverter::get_primary_property($annotations["@references"]);
-
-                $value = $primaryProperty->getValue ($value); 
+                if (is_object ($value))
+                {
+                    // Get the primary key of the object
+                    $primaryProperty = SQLConverter::get_primary_property($annotations["@references"]);
+                    // Get the id value of that object
+                    $value = $primaryProperty->getValue ($value); 
+                }
             }
 
             array_push ($values, "'$value'");

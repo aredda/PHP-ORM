@@ -91,52 +91,62 @@ abstract class Database implements ArrayAccess
             $this->tables[$name] = $this->load_table($name);
 
         // Load children containers
-        foreach ($this->tables as $name => $table)
-        {
-            $containers = SQLConverter::get_children_containers($name);
+        foreach ($this->tables as $table)
+            $this->load_children ($table);
+    }
 
-            if (count($containers) == 0)
+    // Loading children containers
+    public function load_children (Table $table)
+    {
+        $tableName = $table->class;
+
+        $containers = SQLConverter::get_children_containers($tableName);
+
+        if (count($containers) == 0)
+            return;
+
+        $tableKey = SQLConverter::get_primary_property($tableName);
+
+        foreach ($containers as $container)
+        {
+            $childTableName = SQLConverter::get_constraint($container, "@hasMany");
+
+            if (!$this->offsetExists($childTableName))
+                continue;
+            
+            $childTable = $this->tables[$childTableName];
+
+            // Get the property that references the parent in the child's table
+            $childTableReferencer = SQLConverter::search_property($childTableName, "@references", $tableName);
+            
+            if ($childTableReferencer == null)
                 continue;
 
-            $tableKey = SQLConverter::get_primary_property($name);
-
-            foreach ($containers as $container)
+            foreach ($table as $record)
             {
-                $childTableName = SQLConverter::get_constraint($container, "@hasMany");
+                // Retrieve referencing records
+                $virtualContainer = new Table($childTable->class);
 
-                if (!$this->offsetExists($childTableName))
-                    continue;
-                
-                $childTable = $this->tables[$childTableName];
+                // Record id
+                $identifier = $tableKey->getValue ($record);
 
-                // Get the property that references the parent in the child's table
-                $childTableReferencer = SQLConverter::search_property($childTableName, "@references", $name);
-                
-                if ($childTableReferencer == null)
-                    continue;
-
-                foreach ($table as $record)
+                foreach ($childTable as $childRecord)
                 {
-                    // Retrieve referencing records
-                    $virtualContainer = new Table($childTable->class);
+                    // The property that contains the reference of the parent
+                    $reference = $childTableReferencer->getValue ($childRecord);
 
-                    // Record id
-                    $identifier = $tableKey->getValue ($record);
+                    if ($reference == null)
+                        continue;
 
-                    foreach ($childTable as $childRecord)
-                    {
-                        // The property that contains the reference of the parent
-                        $reference = $childTableReferencer->getValue ($childRecord);
-                        // Get the child's referencer's id                     
-                        $referenceIdentifier = $tableKey->getValue ($reference);
+                    // Get the child's referencer's id                     
+                    $referenceIdentifier = $tableKey->getValue ($reference);
 
-                        if (strcmp($identifier, $referenceIdentifier) == 0)
-                            $virtualContainer->add($childRecord);
-                    }
-
-                    // Finalize
-                    $container->setValue ($record, $virtualContainer);
+                    if (strcmp($identifier, $referenceIdentifier) == 0)
+                        $virtualContainer->add($childRecord);
                 }
+
+                // Finalize
+                $container->setValue ($record, $virtualContainer);
             }
         }
     }
