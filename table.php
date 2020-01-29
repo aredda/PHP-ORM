@@ -12,7 +12,7 @@ class Table extends ArrayList
         parent::__construct();
 
         $this->class = $class;
-        $this->clearQueues();
+        $this->clearQueues ();
     }
 
     // Verifiying object's type
@@ -38,10 +38,23 @@ class Table extends ArrayList
         // Add it to the insertion queue as well
         array_push ($this->insertQueue, $item);
     }
+    
     public function remove($item)
     {
+        // If what's sent isn't an object, but rather the identifier of the object
+        // Try to find an object with such identifier value
+        if (!is_a ($item, $this->class))
+            echo "yes";
+
+        throw new Exception ("FUCCK UUUU");
+
+        if ($this->find ($item) == null)
+                throw new Exception ("Couldn't find any '{$this->class}' with such identifier '{$item}'");
+
+        $item = $this->find ($item);
+
         if(!$this->compareType($item))
-            throw new Exception("Expected {" . $this->class . "} instance");
+            throw new Exception ("Expected {" . $this->class . "} instance");
         
         // Remove item from the table's list
         parent::remove($item);

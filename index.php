@@ -92,7 +92,7 @@ try
     $band->genre = "Britpop";
     $band->country = 2;
 
-    $db[Band::class]->add ($band);
+    $db[Band::class]->remove (1);
     $db->refresh ();
     
     // Group bands by their country
