@@ -44,11 +44,7 @@ class Table extends ArrayList
         // If what's sent isn't an object, but rather the identifier of the object
         // Try to find an object with such identifier value
         if (!is_a ($item, $this->class))
-            echo "yes";
-
-        throw new Exception ("FUCCK UUUU");
-
-        if ($this->find ($item) == null)
+            if ($this->find ($item) == null)
                 throw new Exception ("Couldn't find any '{$this->class}' with such identifier '{$item}'");
 
         $item = $this->find ($item);
