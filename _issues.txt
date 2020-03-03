@@ -1,3 +1,4 @@
 - change the structure of the framework
 - Table::select(args) is needed
 - easy/lazy mode is needed
+- change the access modifier for Table's queues
