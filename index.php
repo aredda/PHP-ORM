@@ -1,9 +1,11 @@
 <?php
 
-include $_SERVER["DOCUMENT_ROOT"] . "/AredaORM/collection/list.php";
-include $_SERVER["DOCUMENT_ROOT"] . "/AredaORM/table.php";
-include $_SERVER["DOCUMENT_ROOT"] . "/AredaORM/database.php";
-include $_SERVER["DOCUMENT_ROOT"] . "/AredaORM/sql_converter.php";
+$root = $_SERVER["DOCUMENT_ROOT"] . "/PHP-ORM";
+
+include "$root/utilities/collections/list.php";
+include "$root/dao/table.php";
+include "$root/dao/database.php";
+include "$root/utilities/sql_converter.php";
 
 class TestDatabase extends Database
 {
@@ -14,9 +16,15 @@ class TestDatabase extends Database
 
         // Create the database if not existed
         if (!$this->is_created())
-            if (!$this->create())
-                echo "It is not created";
-        
+        {
+            $result = $this->create();
+
+            if (!$result)
+                die ('Failed to create the database!');
+
+            header ('refresh: 0;');
+        }  
+        // If the database is created
         if ($this->is_created())
             $this->refresh();
     }
@@ -84,17 +92,8 @@ class Person
 
 try
 {
-    $db = new TestDatabase(new mysqli("localhost", "areda", "123"));
-    
-    $band = new Band ();
-    $band->id = 50;
-    $band->name = "Blur";
-    $band->genre = "Britpop";
-    $band->country = 2;
+    $db = new TestDatabase(new mysqli("localhost", "root", ""));
 
-    $db[Band::class]->remove (40);
-    $db->refresh ();
-    
     // Group bands by their country
     foreach ($db[Country::class] as $country)
     {

@@ -82,15 +82,16 @@ class SQLConverter
         return $keys;
     }
 
-    // Get all containers of a record's children
-    // Returns all properties that have 'hasMany' annotation
+    /**
+     * Returns all properties that have 'hasMany' annotation
+     *  */ 
     public static function get_children_containers(string $class)
     {
         $reflecter = new ReflectionClass($class);
         $containers = [];
 
         foreach ($reflecter->getProperties() as $property)
-            if ( SQLConverter::get_constraint($property, "@hasMany") != null )
+            if (SQLConverter::get_constraint($property, "@hasMany") != null)
                 array_push ($containers, $property);
             
         return $containers;
@@ -158,8 +159,12 @@ class SQLConverter
         return null;
     }
 
-    // Get the value of the constraint
-    public static function get_constraint(ReflectionProperty $property, $constraint)
+    /**
+     * @param string $constraint
+     * The annotation you search for, returns null if no such annotation is found
+     * @return ReflectionProperty
+     * */ 
+    public static function get_constraint(ReflectionProperty $property, string $constraint)
     {
         $constraints = SQLConverter::get_constraints($property);
 
@@ -171,6 +176,8 @@ class SQLConverter
     {
         // Empty array
         $data = [];
+        // Adjust charset
+        $connection->query ("SET NAMES utf8");
         // Query result
         $result = $connection->query($query);
         // Add to the empty array
@@ -268,7 +275,7 @@ class SQLConverter
             if (array_key_exists("@primary", $annotations))
                 $pkName = $columnName;
 
-            if (array_key_exists("@hasMany", $annotations) || array_key_exists("@primary", $annotations))
+            if (array_key_exists("@hasMany", $annotations) || array_key_exists("@auto", $annotations))
                 continue;
 
             $value = $property->getValue($instance);
@@ -276,8 +283,9 @@ class SQLConverter
             if (array_key_exists("@references", $annotations))
             {
                 $pk = SQLConverter::get_primary_property($annotations["@references"]);
-
-                $value = $pk->getValue ($value);
+                
+                if (is_object($value))
+                    $value = $pk->getValue ($value);
             }
 
             array_push ($pairs, $columnName . "='$value'");

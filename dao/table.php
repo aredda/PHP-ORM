@@ -99,4 +99,32 @@ class Table extends ArrayList
 
         return $this->array[$index];
     }
+
+    /**
+     * @return array
+     * The array list of records
+     */
+    public function toList ()
+    {
+        return $this->array;
+    }
+
+    /**
+     * @param callable $compareMethod
+     * Specifying how should the Table::where filter the data, it should return a boolean,
+     * it should also takes two params; the $item, which is the iterator & the $criteria 
+     * which is the data to compare with
+     * @return array 
+     * Returns a Table of results
+     */
+    public function where (callable $compareMethod, $criteria)
+    {
+        $result = new Table($this->class);
+
+        foreach ($this as $record)
+            if (call_user_func ($compareMethod, $record, $criteria))
+                $result->add ($record);
+
+        return $result;
+    }
 }

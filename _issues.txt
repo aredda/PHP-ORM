@@ -1,4 +1,4 @@
-- change the structure of the framework
-- Table::select(args) is needed
-- easy/lazy mode is needed
+[done] - change the structure of the framework
+[done] - Table::where(...) is needed
+[done] - easy/lazy mode is needed
 - change the access modifier for Table's queues

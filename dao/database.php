@@ -3,7 +3,7 @@
 abstract class Database implements ArrayAccess
 {
     public $connection;
-    protected $tables;
+    public $tables;
 
     public function __construct($connection)
     {
@@ -81,7 +81,7 @@ abstract class Database implements ArrayAccess
     }
 
     // Loading data from all tables
-    public function refresh()
+    public function refresh ($lazyMode = false)
     {
         // Save changes before refreshing
         $this->save();
@@ -91,6 +91,7 @@ abstract class Database implements ArrayAccess
             $this->tables[$name] = $this->load_table($name);
 
         // Load children containers
+        if (!$lazyMode)
         foreach ($this->tables as $table)
             $this->load_children ($table);
     }
@@ -235,12 +236,3 @@ abstract class Database implements ArrayAccess
             unset($this->tables[$offset]);
     }
 }
-
-/**
- * Now, after designing the high level of the framework,
- * all I need to do, is to create the part that connects the database to those concrete classes.
- * • What to I need?
- * -> A method to get the SQL creation script for each table
- * -> A method to select the data from database and inject it into our instances
- * -> CRUD scripts
- */

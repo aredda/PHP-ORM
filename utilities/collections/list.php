@@ -11,7 +11,7 @@ interface IList extends Iterator
 class ArrayList implements IList
 {
     protected $position = 0;
-    protected $array;
+    public  $array;
 
     public function __construct()
     {
