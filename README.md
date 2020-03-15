@@ -27,11 +27,13 @@ so I could construct valid and precise SQL queries from the provided models.
 
 <h5>3. To use the context, we should instantiate an object of our <code>TestDatabase</code> class:</h5>
 <p>• <code>Database::__construct($connection)</code> takes a connection object as a parameter.
-<br>• <code>Database::setup()</code> is invoked within the contructor.</p>
+<br>• <code>Database::setup()</code> is invoked within the constructor.</p>
 <img src='https://i.imgur.com/CsT65No.jpg'/>
 
 <h5>4. Go to your phpMyAdmin panel, to confirm the creation of your database:</h5>
 <img src='https://i.imgur.com/PLchVHH.jpg' />
+<img src='https://i.imgur.com/tqLWy5I.jpg' />
+<img src='https://i.imgur.com/l8ckzOS.jpg' />
 
 <h4>Congratulations! you've just saved a lot of your time ;)</h4>
 
