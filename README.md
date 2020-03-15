@@ -31,7 +31,7 @@ so I could construct valid and precise SQL queries from the provided models.
 <img src='https://i.imgur.com/CsT65No.jpg'/>
 
 <h5>4. Go to your phpMyAdmin panel, to confirm the creation of your database:</h5>
-<img src='https://i.imgur.com/s8AsXLM.jpg' />
+<img src='https://i.imgur.com/PLchVHH.jpg' />
 
 <h4>Congratulations! you've just saved a lot of your time ;)</h4>
 
