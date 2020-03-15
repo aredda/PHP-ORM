@@ -38,6 +38,5 @@ so I could construct valid and precise SQL queries from the provided models.
 <img src='https://i.imgur.com/l8ckzOS.jpg' />
 
 <h4>That's it, you're ready to go.</h4>
-<hr>
-<i>I have implemented this simple ORM in one of my other projects, if you're interested in other examples, <a href='https://github.com/IbraheemAredda/ArDoros/tree/master/src/models'>check this</a>.</i>
-<br><i><b>More details and documentation will be available as soon as I manage to improve it.</b></i>
+<hr><i>I have implemented this simple ORM in one of my other projects, if you're interested in other examples, <a href='https://github.com/IbraheemAredda/ArDoros/tree/master/src/models'>check this</a>.</i>
+<hr><i><b>More details and documentation will be available as soon as I manage to improve it.</b></i>
