@@ -32,9 +32,12 @@ so I could construct valid and precise SQL queries from the provided models.
 
 <h5>4. Go to your phpMyAdmin panel, to confirm the creation of your database:</h5>
 <img src='https://i.imgur.com/PLchVHH.jpg' />
+<h4>Country model:</h4>
 <img src='https://i.imgur.com/tqLWy5I.jpg' />
+<h4>Band model:</h4>
 <img src='https://i.imgur.com/l8ckzOS.jpg' />
 
-<h4>Congratulations! you've just saved a lot of your time ;)</h4>
-
-<p><i>More details and documentation will be available as soon as I manage to improve it.</i></p>
+<h4>That's it, you're ready to go.</h4>
+<hr>
+<i>I have implemented this simple ORM in one of my other projects, if you're interested in other examples, <a href='https://github.com/IbraheemAredda/ArDoros/tree/master/src/models'>check this</a>.</i>
+<br><i><b>More details and documentation will be available as soon as I manage to improve it.</b></i>
